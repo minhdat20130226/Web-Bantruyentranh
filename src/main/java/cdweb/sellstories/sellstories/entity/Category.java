@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -39,11 +41,26 @@ public class Category {
     private StoryAuthor storyAuthor;
 
     @Column(name = "create_date", columnDefinition ="datetime DEFAULT GETDATE()")
-    private Date createdDate;
+    @CreatedDate
+    private LocalDateTime createdDate;
 
     @Column(name = "updated_date")
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
 
     @Column(columnDefinition = "VARCHAR(55) DEFAULT 'ngừng hoạt động'")
     private String status;
+
+    public Category(Long id, Long idStoriesBook, Long idStoryGenre, Long idStoryTranslator, Long idPlacePublication, Long idStoryAuthor, String status) {
+        this.id = id;
+        this.storiesBook = new StoriesBook(idStoriesBook);
+        this.storyGenre = new StoryGenre(idStoryGenre);
+        this.storyTranslator = new StoryTranslator(idStoryTranslator);
+        this.placePublication = new PlacePublication(idPlacePublication);
+        this.storyAuthor = new StoryAuthor(idStoryAuthor);
+        this.createdDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
+        this.status = status;
+    }
+
+
 }

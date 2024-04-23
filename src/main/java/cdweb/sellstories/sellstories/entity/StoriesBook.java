@@ -36,6 +36,20 @@ public class StoriesBook {
 
     @Column(name = "total_chapter")
     private int totalChapter;
+
+    public StoriesBook(String name, String photoUrl, double price, String description, int ageRequirement, String status, int totalChapter) {
+        this.name = name;
+        this.photoUrl = photoUrl;
+        this.price = price;
+        this.description = description;
+        this.ageRequirement = ageRequirement;
+        this.status = status;
+        this.totalChapter = totalChapter;
+    }
+
+    public StoriesBook(Long id) {
+        this.id = id;
+    }
 }
 
 

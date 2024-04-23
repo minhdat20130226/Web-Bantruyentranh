@@ -1,6 +1,9 @@
 package cdweb.sellstories.sellstories.entity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -20,5 +23,6 @@ public class TwoFactorAuthentication {
 
     @Column(name = "expiry_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private String expiryDate;
+    @CreatedDate
+    private LocalDateTime expiryDate;
 }

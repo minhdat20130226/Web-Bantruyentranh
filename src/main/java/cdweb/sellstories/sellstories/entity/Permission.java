@@ -16,4 +16,9 @@ public class Permission {
     private Long id;
     private String name;
     private String description;
+
+    public Permission(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }

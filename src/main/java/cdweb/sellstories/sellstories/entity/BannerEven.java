@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -33,6 +35,7 @@ public class BannerEven {
     private Date endDate;
 
     @Column(name = "data_Added", columnDefinition = "datetime DEFAULT GETDATE()")
-    private Date dataAdded;
+    @CreatedDate
+    private LocalDateTime dataAdded;
 
 }
