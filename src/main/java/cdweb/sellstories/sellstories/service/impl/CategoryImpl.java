@@ -1,8 +1,8 @@
 package cdweb.sellstories.sellstories.service.impl;
 
 import cdweb.sellstories.sellstories.entity.Category;
-import cdweb.sellstories.sellstories.entity.StoryGenre;
 import cdweb.sellstories.sellstories.repository.CategoryRepository;
+import cdweb.sellstories.sellstories.service.CategoryService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,9 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 
-public class CategoryImpl {
+public class CategoryImpl implements CategoryService {
     final CategoryRepository categoryRepository;
+
 
 
     @PostConstruct
@@ -140,5 +141,8 @@ public class CategoryImpl {
     }
 
 
-
+    @Override
+    public List<Object[]> getAllAuthorsTranslatorsPublicationsGenres() {
+        return categoryRepository.findAllAuthorsTranslatorsPublicationsGenres();
+    }
 }
