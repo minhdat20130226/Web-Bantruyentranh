@@ -10,7 +10,7 @@ import java.util.Map;
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-public class HtppResponse {
+public class HttpResponse {
     protected String timeStamp;
     protected HttpStatus status;
     protected int statusCode;
