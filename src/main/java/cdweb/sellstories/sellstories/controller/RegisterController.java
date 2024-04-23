@@ -59,14 +59,14 @@ public class RegisterController {
     }
 
     @PostMapping("/registerr")
-    public ResponseEntity<HtppResponse> registerInfor(@RequestBody Map<String, Object> request) {
+    public ResponseEntity<HttpResponse> registerInfor(@RequestBody Map<String, Object> request) {
         // Trích xuất thông tin userDTO từ request body
         Map<String, Object> userDTOData = (Map<String, Object>) request.get("userDTO");
         String reqEmail = (String) userDTOData.get("email");
         // email ton tai
         if (userService.existsByEmail(reqEmail))
             return ResponseEntity.created(URI.create("")).body(
-                    HtppResponse.builder()
+                    HttpResponse.builder()
                             .timeStamp(LocalDateTime.now().toString())
                             .data(Map.of("user", "null"))
                             .message("Email đã được đăng ký tài khoản")
@@ -100,7 +100,7 @@ public class RegisterController {
  */
 
         return ResponseEntity.created(URI.create("")).body(
-                HtppResponse.builder()
+                HttpResponse.builder()
                         .timeStamp(LocalDateTime.now().toString())
                         .data(Map.of("user", user))
                         .message("Vui lòng vào email bạn vừa đăng ký xác thực tài khoản")

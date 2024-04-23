@@ -19,10 +19,10 @@ public class PasswordResetTokenController {
     PasswordResetTokenService passwordResetTokenService;
 
     @GetMapping
-    public ResponseEntity<HtppResponse> confirmUserAccount(@RequestParam("token") String token) {
+    public ResponseEntity<HttpResponse> confirmUserAccount(@RequestParam("token") String token) {
         boolean isSuccess = passwordResetTokenService.verifyToken(token);
         return ResponseEntity.ok().body(
-          HtppResponse.builder()
+                HttpResponse.builder()
                   .timeStamp(LocalDateTime.now().toString())
                   .data(Map.of("Success", isSuccess))
                   .message("Account Verified")
