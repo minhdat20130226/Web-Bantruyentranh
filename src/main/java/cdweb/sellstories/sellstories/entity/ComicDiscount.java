@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -26,9 +28,9 @@ public class ComicDiscount {
     private int reduction_rate;
 
     @Column(name = "decrease_day")
-    private Date decreaseDay;
+    private LocalDateTime decreaseDay;
 
     @Column(name = "expiration_date_reduced")
-    private Date expirationDateDeduced;
+    private LocalDateTime expirationDateDeduced;
 
 }

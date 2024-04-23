@@ -1,5 +1,6 @@
 package cdweb.sellstories.sellstories.entity;
 
+import cdweb.sellstories.sellstories.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.*;
 

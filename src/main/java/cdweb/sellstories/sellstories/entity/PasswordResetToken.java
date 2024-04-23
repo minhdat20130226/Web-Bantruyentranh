@@ -2,8 +2,11 @@ package cdweb.sellstories.sellstories.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -25,6 +28,13 @@ public class PasswordResetToken {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "expiry_date")
-    private Date expiryDate;
+    private LocalDateTime expiryDate;
+
+
+    public PasswordResetToken(User user) {
+        this.user = user;
+        this.tokenValue = UUID.randomUUID().toString();
+        this.expiryDate = LocalDateTime.now().plusHours(2);
+    }
 }
 

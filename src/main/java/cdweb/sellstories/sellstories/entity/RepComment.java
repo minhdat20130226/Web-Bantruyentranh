@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -28,8 +30,9 @@ public class RepComment {
     @Column(name = "content_rep")
     private String contentRep;
     @Column(name = "create_at", columnDefinition = "datetime DEFAULT GETDATE()")
-    private Date createdAt;
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 }

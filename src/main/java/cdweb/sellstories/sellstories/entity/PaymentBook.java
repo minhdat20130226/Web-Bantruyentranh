@@ -2,7 +2,9 @@ package cdweb.sellstories.sellstories.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -24,7 +26,8 @@ public class PaymentBook {
     private double amountPaid;
 
     @Column(name = "payment_date")
-    private Date paymentDate;
+    @CreatedDate
+    private LocalDateTime paymentDate;
 
     @Column(name = "payment_method")
     private String paymentMethod;

@@ -16,6 +16,11 @@ public class PlacePublication {
     @Column(unique = true, updatable = false)
     private Long id;
 
-    @Column(name = "name")
+    @Column(unique = true,name = "name")
     private String name;
+
+    public PlacePublication(Long id) {
+        this.id = id;
+    }
+
 }

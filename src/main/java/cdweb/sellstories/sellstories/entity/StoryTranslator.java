@@ -15,6 +15,11 @@ public class StoryTranslator {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, updatable = false)
     private Long id;
-    @Column(name = "name")
+    @Column(unique = true,name = "name")
     private String name;
+
+    public StoryTranslator(Long id) {
+        this.id = id;
+    }
+
 }

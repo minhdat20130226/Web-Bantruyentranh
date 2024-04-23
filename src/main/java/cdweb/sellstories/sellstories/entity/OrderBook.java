@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -38,7 +41,8 @@ public class OrderBook {
     private String shippingMethod;
 
     @Column(name = "order_date", columnDefinition = "datetime DEFAULT GETDATE()")
-    private Date orderDate;
+    @CreatedDate
+    private LocalDateTime orderDate;
 
     @Column(name = "payment_action")
     private String paymentAction;

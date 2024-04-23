@@ -2,8 +2,10 @@ package cdweb.sellstories.sellstories.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,4 +18,9 @@ public class StoryGenre {
     private Long id;
     @Column(name = "name")
     private String name;
+
+    public StoryGenre(Long id) {
+        this.id = id;
+    }
+
 }
