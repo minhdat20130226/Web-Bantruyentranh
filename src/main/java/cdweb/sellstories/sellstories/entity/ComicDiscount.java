@@ -20,7 +20,7 @@ public class ComicDiscount {
     @Column(unique = true, updatable = false)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_stories_book")
     private StoriesBook storiesBook;
 
@@ -33,4 +33,14 @@ public class ComicDiscount {
     @Column(name = "expiration_date_reduced")
     private LocalDateTime expirationDateDeduced;
 
+    @Column(name = "add_day")
+    private LocalDateTime add_day;
+
+    public ComicDiscount(Long id,StoriesBook storiesBook, int reduction_rate) {
+        this.id = id;
+        this.storiesBook = storiesBook;
+        this.reduction_rate = reduction_rate;
+        this.decreaseDay = LocalDateTime.now();
+        this.add_day = LocalDateTime.now();
+    }
 }

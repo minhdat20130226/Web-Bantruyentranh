@@ -1,6 +1,6 @@
 package cdweb.sellstories.sellstories.controller;
 
-import cdweb.sellstories.sellstories.dto.CategoryInfo;
+import cdweb.sellstories.sellstories.dto.CategoryDTO;
 import cdweb.sellstories.sellstories.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +34,7 @@ public class Category {
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(LocalDateTime.now().toString())
-                        .data(Map.of("category", CategoryInfo.groupCategoryByGenre(category)))
+                        .data(Map.of("category", CategoryDTO.groupCategoryByGenre(category)))
                         .message("Genres Fetched Successfully")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())

@@ -1,5 +1,6 @@
 package cdweb.sellstories.sellstories.entity;
 
+import cdweb.sellstories.sellstories.util.LocalDateTimeUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +12,6 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "category")
 public class Category {
@@ -40,8 +40,7 @@ public class Category {
     @JoinColumn(name = "id_story_author")
     private StoryAuthor storyAuthor;
 
-    @Column(name = "create_date", columnDefinition ="datetime DEFAULT GETDATE()")
-    @CreatedDate
+    @Column(name = "create_date")
     private LocalDateTime createdDate;
 
     @Column(name = "updated_date")
@@ -50,17 +49,16 @@ public class Category {
     @Column(columnDefinition = "VARCHAR(55) DEFAULT 'ngừng hoạt động'")
     private String status;
 
-    public Category(Long id, Long idStoriesBook, Long idStoryGenre, Long idStoryTranslator, Long idPlacePublication, Long idStoryAuthor, String status) {
+    public Category(Long id, Long idStoriesBook, Long idStoryGenre, Long idStoryTranslator, Long idPlacePublication, Long idStoryAuthor,String createdDate,String updatedDate, String status) {
         this.id = id;
         this.storiesBook = new StoriesBook(idStoriesBook);
         this.storyGenre = new StoryGenre(idStoryGenre);
         this.storyTranslator = new StoryTranslator(idStoryTranslator);
         this.placePublication = new PlacePublication(idPlacePublication);
         this.storyAuthor = new StoryAuthor(idStoryAuthor);
-        this.createdDate = LocalDateTime.now();
-        this.updatedDate = LocalDateTime.now();
+       this.createdDate = LocalDateTimeUtils.parseDateString(createdDate);
+        this.updatedDate = LocalDateTimeUtils.parseDateString(updatedDate);
         this.status = status;
     }
-
 
 }
