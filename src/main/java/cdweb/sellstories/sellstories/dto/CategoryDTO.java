@@ -4,15 +4,13 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 public class CategoryDTO {
-    public Long id;
+    public Long idStoriesBook;
     public String storyAuthorName;
     public String storyTranslatorName;
     public String placePublicationName;
@@ -20,13 +18,14 @@ public class CategoryDTO {
     public int reductionRate;
     public LocalDateTime createdDate;
     public String status;
+
     public CategoryDTO(String storyAuthorName, String storyTranslatorName, String placePublicationName) {
         this.storyAuthorName = storyAuthorName;
         this.storyTranslatorName = storyTranslatorName;
         this.placePublicationName = placePublicationName;
     }
-    public CategoryDTO(Long id, String storyAuthorName, String storyTranslatorName, String placePublicationName, String storyGenre, int reductionRate, LocalDateTime createdDate, String status ) {
-        this.id = id;
+    public CategoryDTO(Long idStoriesBook, String storyAuthorName, String storyTranslatorName, String placePublicationName, String storyGenre, int reductionRate, LocalDateTime createdDate, String status ) {
+        this.idStoriesBook = idStoriesBook;
         this.storyAuthorName = storyAuthorName;
         this.storyTranslatorName = storyTranslatorName;
         this.placePublicationName = placePublicationName;
@@ -62,16 +61,4 @@ public class CategoryDTO {
                 Collectors.toList()
         ));
     }
-    public static List<CategoryDTO> getNewestBooks(List<CategoryDTO> books, int n) {
-        // Sắp xếp danh sách sách theo thứ tự giảm dần của createdDate
-        List<CategoryDTO> sortedBooks = books.stream()
-                .sorted((b1, b2) -> b2.getCreatedDate().compareTo(b1.getCreatedDate()))
-                .collect(Collectors.toList());
-
-        // Lấy ra n sách mới nhất
-        List<CategoryDTO> newestBooks = sortedBooks.subList(0, Math.min(n, sortedBooks.size()));
-
-        return newestBooks;
-    }
-
 }

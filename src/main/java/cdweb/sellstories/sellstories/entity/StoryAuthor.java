@@ -22,5 +22,7 @@ public class StoryAuthor {
     public StoryAuthor(Long id) {
         this.id = id;
     }
-
+    public StoryAuthor( String name) {
+        this.name = name;
+    }
 }

@@ -21,5 +21,7 @@ public class StoryTranslator {
     public StoryTranslator(Long id) {
         this.id = id;
     }
-
+    public StoryTranslator( String name) {
+        this.name = name;
+    }
 }
