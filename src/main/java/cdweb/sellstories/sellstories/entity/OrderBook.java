@@ -1,5 +1,6 @@
 package cdweb.sellstories.sellstories.entity;
 
+import cdweb.sellstories.sellstories.util.LocalDateTimeUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,4 +48,15 @@ public class OrderBook {
     @Column(name = "payment_action")
     private String paymentAction;
 
+    public OrderBook(Long id,Long idStories, Long  idUser, String orderCode, String orderStatus, int quantity, String shippingMethod, String orderDate, String paymentAction) {
+        this.id = id;
+        this.stories = new StoriesBook(idStories);
+        this.user = new User(idUser);
+        this.orderCode = orderCode;
+        this.orderStatus = orderStatus;
+        this.quantity = quantity;
+        this.shippingMethod = shippingMethod;
+        this.orderDate = LocalDateTimeUtils.parseDateString(orderDate);
+        this.paymentAction = paymentAction;
+    }
 }

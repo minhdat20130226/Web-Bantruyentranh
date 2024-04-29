@@ -2,6 +2,7 @@ package cdweb.sellstories.sellstories.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "place_publication")
+@Builder
 public class PlacePublication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

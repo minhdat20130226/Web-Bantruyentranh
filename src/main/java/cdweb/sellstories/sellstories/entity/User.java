@@ -65,4 +65,8 @@ public class User {
         this.dateRegistered = LocalDateTime.now();
         this.passWord = passWord;
     }
+
+    public User(Long id) {
+        this.id = id;
+    }
 }
