@@ -1,12 +1,14 @@
 package cdweb.sellstories.sellstories.entity;
 
+import cdweb.sellstories.sellstories.util.LocalDateTimeUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "stories_book")
@@ -37,7 +39,14 @@ public class StoriesBook {
     @Column(name = "total_chapter")
     private int totalChapter;
 
-    public StoriesBook(String name, String photoUrl, double price, String description, int ageRequirement, String status, int totalChapter) {
+    @Column(name = "create_date")
+    private LocalDateTime createdDate;
+
+    @Column(name = "updated_date")
+    private LocalDateTime updatedDate;
+
+    public StoriesBook(Long id,String name, String photoUrl, double price, String description, int ageRequirement, String status, int totalChapter,String createdDate,String updatedDate) {
+        this.id = id;
         this.name = name;
         this.photoUrl = photoUrl;
         this.price = price;
@@ -45,6 +54,8 @@ public class StoriesBook {
         this.ageRequirement = ageRequirement;
         this.status = status;
         this.totalChapter = totalChapter;
+        this.createdDate = LocalDateTimeUtils.parseDateString(createdDate);
+        this.updatedDate = LocalDateTimeUtils.parseDateString(updatedDate);
     }
 
     public StoriesBook(Long id) {

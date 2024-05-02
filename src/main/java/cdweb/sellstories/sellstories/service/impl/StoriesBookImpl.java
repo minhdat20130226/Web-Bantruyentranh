@@ -1,7 +1,6 @@
 package cdweb.sellstories.sellstories.service.impl;
 
 import cdweb.sellstories.sellstories.dto.StoriesBookDTO;
-import cdweb.sellstories.sellstories.entity.Category;
 import cdweb.sellstories.sellstories.entity.StoriesBook;
 import cdweb.sellstories.sellstories.mapper.StoriesBookMapper;
 import cdweb.sellstories.sellstories.repository.StoriesBookRepository;
@@ -9,11 +8,22 @@ import cdweb.sellstories.sellstories.service.StoriesBookService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static cdweb.sellstories.sellstories.Constant.Constant.PHOTO_DIRECTORY;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
 @RequiredArgsConstructor
@@ -1100,4 +1110,38 @@ public class StoriesBookImpl implements StoriesBookService {
                 .map(StoriesBookMapper::storiesBookToStoriesBookDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public String uploadPhoto(Long idBook, MultipartFile file) {
+        StoriesBook storiesBook = storiesBookRepository.findById(idBook).orElse(null);
+        String photoUrl = photoFunction.apply(idBook,file);
+        storiesBook.setPhotoUrl(photoUrl);
+        storiesBookRepository.save(storiesBook);
+        return photoUrl;
+    }
+
+    @Override
+    public byte[] getPhoto(String fileName) throws IOException {
+        return Files.readAllBytes(Paths.get(fileName));
+    }
+    private final Function<String,String> fileExtension = fileName ->
+            Optional.of(fileName).filter(name -> name.contains("."))
+                    .map(name -> "." + name.substring(fileName.lastIndexOf(".")+1)).orElse(".png");
+
+    private final BiFunction<Long, MultipartFile, String> photoFunction = (idBook, image) -> {
+        String fileName = idBook + fileExtension.apply(image.getOriginalFilename());
+        try {
+            Path fileStorageLocation = Paths.get(PHOTO_DIRECTORY).toAbsolutePath().normalize();
+            if (!Files.exists(fileStorageLocation)){
+            Files.createDirectories(fileStorageLocation);}
+            Files.copy(image.getInputStream(), fileStorageLocation.resolve(fileName),REPLACE_EXISTING);
+            return ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path("/book/image/" + fileName).toUriString();
+        }
+
+        catch (Exception e) {
+            throw new RuntimeException("Unable to save image");
+        }
+    };
 }
