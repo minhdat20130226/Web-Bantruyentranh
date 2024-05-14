@@ -130,4 +130,9 @@ public class ComicDiscountImpl implements ComicDiscountService {
                     new ComicDiscount(105L, new StoriesBook(105L), 46),
                     new ComicDiscount(106L, new StoriesBook(106L), 80),
                     new ComicDiscount(107L, new StoriesBook(107L), 3));
+
+    @Override
+    public Long findIdWithMaxReductionRate() {
+        return comicDiscountRepository.findIdWithMaxReductionRate();
+    }
 }

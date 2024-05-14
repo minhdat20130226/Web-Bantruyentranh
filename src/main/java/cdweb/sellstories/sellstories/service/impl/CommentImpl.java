@@ -5,6 +5,8 @@ import cdweb.sellstories.sellstories.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CommentImpl implements CommentService {
@@ -18,5 +20,10 @@ public class CommentImpl implements CommentService {
     @Override
     public Long findIdOfBookWithStarTotal() {
         return commentRepository.findIdOfBookWithStarTotal();
+    }
+
+    @Override
+    public List<Long> getAllCommentIdStoriesBook(int numberStartFind) {
+        return commentRepository.getAllCommentIdStoriesBook(numberStartFind);
     }
 }

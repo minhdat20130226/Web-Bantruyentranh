@@ -1,7 +1,6 @@
 package cdweb.sellstories.sellstories.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +12,7 @@ import lombok.Data;
 public class PlacePublicationDTO {
     private Long id;
     private String name;
-    public PlacePublicationDTO( String name) {
-        this.name = name;
-    }
+    private int totalBookPublic;
+
+
 }

@@ -6,5 +6,5 @@ import cdweb.sellstories.sellstories.dto.OrderBookDTO;
 import java.util.List;
 
 public interface OrderBookService {
-    List<OrderBookDTO> findStoriesWithTotalQuantity();
+    List<Long> findStoriesWithTotalQuantity(int largerValue);
 }

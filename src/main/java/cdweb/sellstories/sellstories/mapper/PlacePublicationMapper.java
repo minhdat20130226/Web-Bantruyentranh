@@ -7,6 +7,7 @@ public class PlacePublicationMapper {
 
  public static PlacePublicationDTO mapToPlacePublicationDTO(PlacePublication placePublication) {
      return PlacePublicationDTO.builder()
+             .id(placePublication.getId())
              .name(placePublication.getName())
              .build();
  }

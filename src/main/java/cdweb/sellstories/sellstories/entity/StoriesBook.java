@@ -30,8 +30,12 @@ public class StoriesBook {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "age_requirement")
-    private int ageRequirement;
+//    @Column(name = "age_requirement")
+//    private int ageRequirement;
+
+    @ManyToOne
+    @JoinColumn(name = "id_reading_age")
+    private ReadingAge readingAge;
 
     @Column(name = "status")
     private String status;
@@ -45,13 +49,13 @@ public class StoriesBook {
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
 
-    public StoriesBook(Long id,String name, String photoUrl, double price, String description, int ageRequirement, String status, int totalChapter,String createdDate,String updatedDate) {
+    public StoriesBook(Long id,String name, String photoUrl, double price, String description, Long idAgeRequirement, String status, int totalChapter,String createdDate,String updatedDate) {
         this.id = id;
         this.name = name;
         this.photoUrl = photoUrl;
         this.price = price;
         this.description = description;
-        this.ageRequirement = ageRequirement;
+        this.readingAge = new ReadingAge(idAgeRequirement);
         this.status = status;
         this.totalChapter = totalChapter;
         this.createdDate = LocalDateTimeUtils.parseDateString(createdDate);

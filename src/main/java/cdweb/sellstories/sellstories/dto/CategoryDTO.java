@@ -1,16 +1,19 @@
 package cdweb.sellstories.sellstories.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-@Getter
+@AllArgsConstructor
+@Builder
+@Data
 public class CategoryDTO {
     public Long idStoriesBook;
+    public StoriesBookDTO storiesBookDTO;
     public String storyAuthorName;
     public String storyTranslatorName;
     public String placePublicationName;

@@ -1,8 +1,8 @@
 package cdweb.sellstories.sellstories.dto;
 
-import cdweb.sellstories.sellstories.entity.OrderBook;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class OrderBookDTO {
     private Long id;
@@ -22,9 +23,9 @@ public class OrderBookDTO {
     private String shippingMethod;
     private LocalDateTime orderDate;
     private String paymentAction;
-    private Long totalQuantity;
+    private int totalQuantity;
 
-    public OrderBookDTO(Long storiesId, Long totalQuantity) {
+    public OrderBookDTO(Long storiesId, int totalQuantity) {
         this.storiesId = storiesId;
         this.totalQuantity = totalQuantity;
     }

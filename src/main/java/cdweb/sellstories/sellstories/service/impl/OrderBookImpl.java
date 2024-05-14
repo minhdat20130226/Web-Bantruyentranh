@@ -1,13 +1,19 @@
 package cdweb.sellstories.sellstories.service.impl;
 
+import cdweb.sellstories.sellstories.dto.CategoryDTO;
 import cdweb.sellstories.sellstories.dto.OrderBookDTO;
+import cdweb.sellstories.sellstories.entity.Category;
+import cdweb.sellstories.sellstories.entity.ComicDiscount;
 import cdweb.sellstories.sellstories.entity.OrderBook;
+import cdweb.sellstories.sellstories.entity.StoriesBook;
+import cdweb.sellstories.sellstories.mapper.CategoryMapper;
 import cdweb.sellstories.sellstories.repository.OrderBookRepository;
 import cdweb.sellstories.sellstories.service.OrderBookService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,8 +23,8 @@ public class OrderBookImpl implements OrderBookService {
     final OrderBookRepository orderBookRepository;
 
     @Override
-    public List<OrderBookDTO> findStoriesWithTotalQuantity() {
-        return orderBookRepository.findStoriesWithTotalQuantity();
+    public List<Long> findStoriesWithTotalQuantity(int largerValue) {
+        return  orderBookRepository.findStoriesWithTotalQuantity(largerValue);
     }
 
     @PostConstruct

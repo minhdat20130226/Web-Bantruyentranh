@@ -1,7 +1,6 @@
 package cdweb.sellstories.sellstories.controller;
 
-import cdweb.sellstories.sellstories.dto.OrderBookDTO;
-import cdweb.sellstories.sellstories.dto.StoriesBookDTO;
+import cdweb.sellstories.sellstories.dto.CategoryDTO;
 import cdweb.sellstories.sellstories.service.CategoryService;
 import cdweb.sellstories.sellstories.service.OrderBookService;
 import cdweb.sellstories.sellstories.service.StoriesBookService;
@@ -13,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,10 +35,11 @@ public class WEEKBOOK {
     public ResponseEntity<HttpResponse> getAllNewBook() {
 
         try {
+            List<CategoryDTO> booksByStatus = categoryService.getBookByStatus("Hoạt động").reversed();
             return ResponseEntity.ok().body(
                     HttpResponse.builder()
                             .timeStamp(LocalDateTime.now().toString())
-                            .data(Map.of("bookNew",StoriesBookDTO.getNewBooks(storiesBookService.getAllStoriesBook(),categoryService.getBook(),20,"Hoạt động")))
+                            .data(Map.of("bookNew",booksByStatus))
                             .message("book genre new successfully")
                             .status(HttpStatus.OK)
                             .statusCode(HttpStatus.OK.value())
@@ -61,7 +62,7 @@ public class WEEKBOOK {
             return ResponseEntity.ok().body(
                     HttpResponse.builder()
                             .timeStamp(LocalDateTime.now().toString())
-                            .data(Map.of("bookComingSoon",StoriesBookDTO.getComingSoonBooks(storiesBookService.getAllStoriesBook(),categoryService.getBook(),20,"Sắp ra mắt")))
+                            .data(Map.of("bookComingSoon",categoryService.getBookByStatus("Sắp ra mắt")))
                             .message("book coming soon successfully")
                             .status(HttpStatus.OK)
                             .statusCode(HttpStatus.OK.value())
@@ -78,16 +79,30 @@ public class WEEKBOOK {
             );
         }
     }
-
+//san pham ban chay
     @GetMapping("/api/best-sell-book")
     public ResponseEntity<HttpResponse> getAllBestSellBook() {
-        List<OrderBookDTO> bookQuality = orderBookService.findStoriesWithTotalQuantity();
-        List<StoriesBookDTO> storiesBooks = StoriesBookDTO.getBooks(storiesBookService.getAllStoriesBook(), categoryService.getBook()).toList();
+        List<Long> lsBookSell = orderBookService.findStoriesWithTotalQuantity(5);
+        List<CategoryDTO> hd_storiesBooks = categoryService.getBookByStatus("Hoạt động");
+        List<CategoryDTO> srm_storiesBooks = categoryService.getBookByStatus("Sắp ra mắt");
+
+
+        List<CategoryDTO> categoryDTOsSell = new ArrayList<>();
+        for (CategoryDTO categoryDTO : hd_storiesBooks) {
+            if (lsBookSell.contains(categoryDTO.getStoriesBookDTO().getId())) {
+                categoryDTOsSell.add(categoryDTO);
+            }
+        }
+        for (CategoryDTO categoryDTO : srm_storiesBooks) {
+            if (lsBookSell.contains(categoryDTO.getStoriesBookDTO().getId())) {
+                categoryDTOsSell.add(categoryDTO);
+            }
+        }
         try {
             return ResponseEntity.ok().body(
                     HttpResponse.builder()
                             .timeStamp(LocalDateTime.now().toString())
-                            .data(Map.of("bookBestSell",StoriesBookDTO.getBookBestSell(storiesBooks,bookQuality,20)))
+                            .data(Map.of("bookBestSell",categoryDTOsSell))
                             .message("book best sell successfully")
                             .status(HttpStatus.OK)
                             .statusCode(HttpStatus.OK.value())

@@ -1,18 +1,18 @@
 package cdweb.sellstories.sellstories.controller;
 
+import cdweb.sellstories.sellstories.dto.CategoryDTO;
 import cdweb.sellstories.sellstories.dto.StoriesBookDTO;
 import cdweb.sellstories.sellstories.service.CategoryService;
+import cdweb.sellstories.sellstories.service.ComicDiscountService;
 import cdweb.sellstories.sellstories.service.CommentService;
 import cdweb.sellstories.sellstories.service.StoriesBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Comparator;
+
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 
 @RestController
@@ -23,19 +23,19 @@ public class TopicGroup {
     private CommentService commentService;
     @Autowired
     private StoriesBookService storiesBookService;
+    @Autowired
+    private ComicDiscountService comicDiscountService;
 
-        @GetMapping("api/topic/ud-in-day")
+    // uu dai trong ngay lay san pham giam gia cao nhat
+    @GetMapping("api/topic/ud-in-day")
     public ResponseEntity<HttpResponse> maxReductionRateBook() {
         try {
-            Optional<StoriesBookDTO> maxReductionRateBook = StoriesBookDTO.getBooks(storiesBookService.getAllStoriesBook(), categoryService.getBook())
-                    .max(Comparator.comparingDouble(StoriesBookDTO::getReductionRate));
-            if (maxReductionRateBook.isPresent()) {
-                StoriesBookDTO bookWithMaxReductionRate = maxReductionRateBook.get();
-                System.out.println("Book with max reduction rate: " + bookWithMaxReductionRate);
-
+            Long idBook = comicDiscountService.findIdWithMaxReductionRate();
+            CategoryDTO bookUDIN = categoryService.findByStoriesBookId(idBook);
+            if (bookUDIN != null) {
                 HttpResponse response = HttpResponse.builder()
                         .timeStamp(LocalDateTime.now().toString())
-                        .data(Map.of("bookMaxReductionRate", bookWithMaxReductionRate))
+                        .data(Map.of("bookMaxReductionRate", bookUDIN))
                         .message("book genre new successfully")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
@@ -67,31 +67,25 @@ public class TopicGroup {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    private  Optional<StoriesBookDTO> getBookWithTopic(Long idBook){
-        Stream<StoriesBookDTO> bookDTOList = StoriesBookDTO.getBooks(storiesBookService.getAllStoriesBook(), categoryService.getBook());
-    return bookDTOList
-                .filter(book -> book.getId().equals(idBook))
-                .findFirst();
-    }
+
+
     // lay sach co so luong nguoi dung thich nhieu nhat
     @GetMapping("api/topic/max-is-like")
     public ResponseEntity<HttpResponse> maxIsLikeBook() {
-        Long idHighestLike = commentService.findIdOfBookWithHighestLike();
         try {
+            Long idHighestLike = commentService.findIdOfBookWithHighestLike();
+            CategoryDTO highestLikeBook = categoryService.findByStoriesBookId(idHighestLike);
+            return ResponseEntity.ok().body(
+                    HttpResponse.builder()
+                            .timeStamp(LocalDateTime.now().toString())
+                            .data(Map.of("bookMaxLike", highestLikeBook))
+                            .message("book best sell successfully")
+                            .status(HttpStatus.OK)
+                            .statusCode(HttpStatus.OK.value())
+                            .build()
+            );
 
-                StoriesBookDTO highestLikeBook = getBookWithTopic(idHighestLike).get();
-                return ResponseEntity.ok().body(
-                        HttpResponse.builder()
-                                .timeStamp(LocalDateTime.now().toString())
-                                .data(Map.of("bookMaxLike", highestLikeBook))
-                                .message("book best sell successfully")
-                                .status(HttpStatus.OK)
-                                .statusCode(HttpStatus.OK.value())
-                                .build()
-                );
-
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     HttpResponse.builder()
                             .timeStamp(LocalDateTime.now().toString())
@@ -102,13 +96,14 @@ public class TopicGroup {
             );
         }
     }
+
     // lay sach co so sao duoc danh gia nhieu nhat
     @GetMapping("api/topic/popular-book")
     public ResponseEntity<HttpResponse> maxPopularBook() {
-        Long idBookWithStarTop = commentService.findIdOfBookWithStarTotal();
-        try {
 
-            StoriesBookDTO highestLikeBook = getBookWithTopic(idBookWithStarTop).get();
+        try {
+            Long idBookWithStarTop = commentService.findIdOfBookWithStarTotal();
+            CategoryDTO highestLikeBook = categoryService.findByStoriesBookId(idBookWithStarTop);
             return ResponseEntity.ok().body(
                     HttpResponse.builder()
                             .timeStamp(LocalDateTime.now().toString())
@@ -119,8 +114,7 @@ public class TopicGroup {
                             .build()
             );
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     HttpResponse.builder()
                             .timeStamp(LocalDateTime.now().toString())
@@ -131,24 +125,24 @@ public class TopicGroup {
             );
         }
     }
-// lay san pham co ngay them vo lon nhat
+
+    // lay san pham co ngay them vo lon nhat
     @GetMapping("/api/topic/new-book")
     public ResponseEntity<HttpResponse> maxNewBook() {
         try {
-        StoriesBookDTO idBookWithStarTop = StoriesBookDTO.getBooks(storiesBookService.getAllStoriesBook(),categoryService.getBook())
-                .sorted(Comparator.comparing(StoriesBookDTO::getCreatedDate)).toList().getLast();
+            Long idBookWithStarTop =storiesBookService.findIdOfLatestCreatedStoriesBook();
+            CategoryDTO newBook = categoryService.findByStoriesBookId(idBookWithStarTop);
             return ResponseEntity.ok().body(
                     HttpResponse.builder()
                             .timeStamp(LocalDateTime.now().toString())
-                            .data(Map.of("bookNew", idBookWithStarTop))
+                            .data(Map.of("bookNew", newBook))
                             .message("book new successfully")
                             .status(HttpStatus.OK)
                             .statusCode(HttpStatus.OK.value())
                             .build()
             );
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     HttpResponse.builder()
                             .timeStamp(LocalDateTime.now().toString())
