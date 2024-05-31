@@ -1,10 +1,12 @@
 package cdweb.sellstories.sellstories.dto;
 
 import cdweb.sellstories.sellstories.entity.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,6 +16,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class UserDTO {
     private Long id;
     private String userName;
@@ -21,12 +24,17 @@ public class UserDTO {
     private String gender;
     private String email;
     private LocalDate birthDate;
-    private String address;
     private String numberPhone;
+
+    private String country;
     private String province;
     private String district;
+    private String street;
+    private String address;
+
     private LocalDateTime dateRegistered;
     private String isActive;
+    private String password;
 
     public UserDTO(User user) {
         this.id = user.getId();
@@ -36,5 +44,7 @@ public class UserDTO {
         this.birthDate = user.getBirthDate();
         this.isActive = user.getIsActive();
         this.dateRegistered = user.getDateRegistered();
+        this.password = user.getPassWord();
     }
+
 }

@@ -12,7 +12,7 @@ public class StoriesBookMapper {
                 .photoUrl(storiesBook.getPhotoUrl())
                 .price(storiesBook.getPrice())
                 .description(storiesBook.getDescription())
-                .ageRequirement(storiesBook.getAgeRequirement())
+                .ageRequirement(Math.toIntExact(storiesBook.getReadingAge().getAge()))
                 .status(storiesBook.getStatus())
                 .totalChapter(storiesBook.getTotalChapter())
                 .createdDate(storiesBook.getCreatedDate())

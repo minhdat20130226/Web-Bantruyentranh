@@ -1,6 +1,8 @@
 package cdweb.sellstories.sellstories.service.impl;
 
+import cdweb.sellstories.sellstories.dto.StoryGenreDTO;
 import cdweb.sellstories.sellstories.entity.StoryGenre;
+import cdweb.sellstories.sellstories.mapper.StoryGenreMapper;
 import cdweb.sellstories.sellstories.repository.StoryGenreRepository;
 import cdweb.sellstories.sellstories.service.StoryGenreService;
 import jakarta.annotation.PostConstruct;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,8 +19,12 @@ public class StoryGenreImpl implements StoryGenreService {
     final StoryGenreRepository storyGenreRepository;
 
     @Override
-    public List<StoryGenre> getAllGenres() {
-        return storyGenreRepository.findAll();
+    public List<StoryGenreDTO> getAllGenres() {
+        List<StoryGenre> storyGenres = storyGenreRepository.findAll();
+        // parallelStream cho phep xu ly da luong
+        return storyGenres.parallelStream()
+                .map(StoryGenreMapper::mapToStoryGenreDTO)
+                .collect(Collectors.toList());
     }
 
 

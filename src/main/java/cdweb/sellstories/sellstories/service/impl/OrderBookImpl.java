@@ -5,8 +5,10 @@ import cdweb.sellstories.sellstories.dto.OrderBookDTO;
 import cdweb.sellstories.sellstories.entity.Category;
 import cdweb.sellstories.sellstories.entity.ComicDiscount;
 import cdweb.sellstories.sellstories.entity.OrderBook;
-import cdweb.sellstories.sellstories.entity.StoriesBook;
+import cdweb.sellstories.sellstories.entity.ProductBuy;
 import cdweb.sellstories.sellstories.mapper.CategoryMapper;
+import cdweb.sellstories.sellstories.mapper.OrderBookMapper;
+import cdweb.sellstories.sellstories.mapper.ProductBuyMapper;
 import cdweb.sellstories.sellstories.repository.OrderBookRepository;
 import cdweb.sellstories.sellstories.service.OrderBookService;
 import jakarta.annotation.PostConstruct;
@@ -24,7 +26,29 @@ public class OrderBookImpl implements OrderBookService {
 
     @Override
     public List<Long> findStoriesWithTotalQuantity(int largerValue) {
-        return  orderBookRepository.findStoriesWithTotalQuantity(largerValue);
+        return orderBookRepository.findStoriesWithTotalQuantity(largerValue);
+    }
+
+    @Override
+    public List<OrderBookDTO> findCategoriesByTotalQuantityAndGenre(int larger, String genre) {
+        List<OrderBookDTO> lsBookBestSell = new ArrayList<>();
+        List<Object[]> lsBookSell = orderBookRepository.findCategoriesByTotalQuantityAndGenre(larger, genre);
+        lsBookSell.forEach(objects ->
+                lsBookBestSell.add(OrderBookMapper.mapComicDiscountToCategory(objects)));
+        return lsBookBestSell;
+    }
+
+    @Override
+    public Long createOrderBook(OrderBookDTO orderBookDTO) {
+        try {
+            OrderBook orderBook = OrderBookMapper.mapToOrderBook(orderBookDTO);
+            OrderBook orderBookSave = orderBookRepository.save(orderBook);
+            return orderBookSave.getId();
+        } catch (Exception e) {
+            System.err.println("Error order: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @PostConstruct

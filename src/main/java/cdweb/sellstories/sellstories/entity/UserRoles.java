@@ -24,4 +24,8 @@ public class UserRoles {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    public UserRoles(Long idUser, Role role) {
+        this.user = new User(idUser);
+        this.role = role;
+    }
 }

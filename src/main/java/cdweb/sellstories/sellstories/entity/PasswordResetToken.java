@@ -31,9 +31,9 @@ public class PasswordResetToken {
     private LocalDateTime expiryDate;
 
 
-    public PasswordResetToken(User user) {
-        this.user = user;
-        this.tokenValue = UUID.randomUUID().toString();
+    public PasswordResetToken(Long idUser,String tokenValue) {
+        this.user = new User(idUser);
+        this.tokenValue = tokenValue;
         this.expiryDate = LocalDateTime.now().plusHours(2);
     }
 }

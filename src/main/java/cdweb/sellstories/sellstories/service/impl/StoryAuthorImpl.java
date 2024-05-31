@@ -1,17 +1,21 @@
 package cdweb.sellstories.sellstories.service.impl;
 
+import cdweb.sellstories.sellstories.dto.StoryAuthorDTO;
 import cdweb.sellstories.sellstories.entity.StoryAuthor;
+import cdweb.sellstories.sellstories.mapper.StoryAuthorMapper;
 import cdweb.sellstories.sellstories.repository.StoryAuthorRepository;
+import cdweb.sellstories.sellstories.service.StoryAuthorService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class StoryAuthorImpl {
+public class StoryAuthorImpl implements StoryAuthorService {
     final StoryAuthorRepository storyAuthorRepository;
     @PostConstruct
     public void addDefaultStoryAuthor() {
@@ -36,4 +40,12 @@ public class StoryAuthorImpl {
             new StoryAuthor(15L, "Gabriel García Márquez")
     );
 
+    @Override
+    public List<StoryAuthorDTO> getAllStoryAuthor() {
+        List<StoryAuthor> storyAuthors = storyAuthorRepository.findAll();
+        // parallelStream cho phep xu ly da luong
+        return storyAuthors.parallelStream()
+                .map(StoryAuthorMapper::mapToStoryAuthorDTO)
+                .collect(Collectors.toList());
+    }
 }

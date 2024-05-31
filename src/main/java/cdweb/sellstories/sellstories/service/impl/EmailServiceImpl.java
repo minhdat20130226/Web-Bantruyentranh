@@ -19,13 +19,13 @@ public class EmailServiceImpl implements EmailService {
 
 
     @Override
-    public void sendSimpleMailMessage(String name, String to, String token) {
+    public void sendSimpleMailMessageRegisterAccount(String nameUser, String to, String token) {
         try{
         SimpleMailMessage message = new SimpleMailMessage();
         message.setSubject("Kích hoạt tài khoản Stories");
         message.setFrom(fromEmail);
         message.setTo(to);
-        message.setText(EmailUtils.getEmailMessage(name,host,token));
+        message.setText(EmailUtils.getEmailMessage(nameUser,host,token));
         javaMailSender.send(message);
         }
         catch (Exception ex){

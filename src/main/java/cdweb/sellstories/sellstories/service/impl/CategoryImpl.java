@@ -1,14 +1,20 @@
 package cdweb.sellstories.sellstories.service.impl;
 
 import cdweb.sellstories.sellstories.dto.CategoryDTO;
+import cdweb.sellstories.sellstories.dto.OrderBookDTO;
 import cdweb.sellstories.sellstories.entity.Category;
+import cdweb.sellstories.sellstories.entity.ComicDiscount;
+import cdweb.sellstories.sellstories.mapper.CategoryMapper;
 import cdweb.sellstories.sellstories.repository.CategoryRepository;
 import cdweb.sellstories.sellstories.service.CategoryService;
+import cdweb.sellstories.sellstories.service.OrderBookService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -16,8 +22,7 @@ import java.util.*;
 
 public class CategoryImpl implements CategoryService {
     final CategoryRepository categoryRepository;
-
-
+    final OrderBookService orderBookService;
 
     @PostConstruct
     public void addDefaultCategory() {
@@ -26,35 +31,35 @@ public class CategoryImpl implements CategoryService {
     }
 
     public List<Category> generateCategoryList() {
-            String[] status = {"Hoạt động","Sắp ra mắt"};
+        String[] status = {"Hoạt động", "Sắp ra mắt"};
         return Arrays.asList(
                 new Category(1L, 1L, 1L, 10L, 15L, 8L, "2024/04/22 12:20:30", "2024/04/22 23:20:30", status[0]),
                 new Category(2L, 2L, 1L, 12L, 18L, 5L, "2024/04/23 12:22:30", "2024/04/23 23:22:30", status[0]),
-                new Category(3L, 3L, 1L, 15L, 10L, 12L, "2024/04/24 12:24:30", "2024/04/24 23:24:30",status[1]),
-                new Category(4L, 4L, 1L, 18L, 12L, 10L, "2024/04/22 12:20:30", "2024/04/22 23:20:30",status[1]),
-                new Category(5L, 5L, 1L, 16L, 14L, 8L, "2024/04/23 12:22:30", "2024/04/23 23:22:30",status[1]),
-                new Category(6L, 6L, 1L, 14L, 16L, 6L, "2024/04/24 12:24:30", "2024/04/24 23:24:30",status[1]),
-                new Category(7L, 7L, 1L, 12L, 18L, 4L, "2024/04/25 12:26:30", "2024/04/25 23:26:30",status[1]),
-                new Category(8L, 8L, 1L, 10L, 20L, 2L, "2024/04/26 12:28:30", "2024/04/26 23:28:30",status[1]),
-                new Category(9L, 9L, 1L, 8L, 18L, 12L, "2024/05/01 12:30:30", "2024/05/01 23:30:30",status[1]),
-                new Category(10L, 10L, 1L, 6L, 16L, 10L, "2024/05/02 12:32:30", "2024/05/02 23:32:30",status[1]),
-                new Category(11L, 11L, 1L, 4L, 14L, 8L, "2024/05/03 12:34:30", "2024/05/03 23:34:30",status[1]),
-                new Category(12L, 12L, 1L, 2L, 12L, 6L, "2024/05/04 12:36:30", "2024/05/04 23:36:30",status[1]),
-                new Category(13L, 13L, 1L, 12L, 10L, 4L, "2024/05/05 12:38:30", "2024/05/05 23:38:30",status[1]),
-                new Category(14L, 14L, 1L, 2L, 8L, 2L, "2024/05/06 12:40:30", "2024/05/06 23:40:30",status[1]),
-                new Category(15L, 15L, 1L, 18L, 12L, 10L, "2024/04/22 12:20:30", "2024/04/22 23:20:30",status[1]),
-                new Category(16L, 16L, 1L, 17L, 14L, 8L, "2024/04/23 12:22:30", "2024/04/23 23:22:30",status[1]),
-                new Category(17L, 17L, 1L, 16L, 16L, 5L, "2024/04/24 12:24:30", "2024/04/24 23:24:30",status[1]),
-                new Category(18L, 18L, 1L, 15L, 18L, 12L, "2024/04/25 12:26:30", "2024/04/25 23:26:30",status[1]),
-                new Category(19L, 19L, 1L, 14L, 20L, 10L, "2024/04/26 12:28:30", "2024/04/26 23:28:30",status[1]),
-                new Category(20L, 20L, 1L, 13L, 18L, 8L, "2024/04/27 12:30:30", "2024/04/27 23:30:30",status[1]),
-                new Category(21L, 21L, 1L, 12L, 16L, 5L, "2024/04/28 12:32:30", "2024/04/28 23:32:30",status[1]),
-                new Category(22L, 22L, 1L, 11L, 14L, 3L, "2024/04/29 12:34:30", "2024/04/29 23:34:30",status[1]),
-                new Category(23L, 23L, 1L, 10L, 12L, 1L, "2024/04/30 12:36:30", "2024/04/30 23:36:30",status[1]),
-                new Category(24L, 24L, 1L, 9L, 10L, 10L, "2024/05/01 12:38:30", "2024/05/01 23:38:30",status[1]),
-                new Category(25L, 25L, 1L, 8L, 8L, 8L, "2024/05/02 12:40:30", "2024/05/02 23:40:30",status[1]),
-                new Category(26L, 26L, 1L, 7L, 6L, 6L, "2024/05/03 12:42:30", "2024/05/03 23:42:30",status[1]),
-                new Category(27L, 27L, 2L, 5L, 4L, 3L, "2024/05/04 12:44:30", "2024/05/04 23:44:30",status[1]),
+                new Category(3L, 3L, 1L, 15L, 10L, 12L, "2024/04/24 12:24:30", "2024/04/24 23:24:30", status[1]),
+                new Category(4L, 4L, 1L, 18L, 12L, 10L, "2024/04/22 12:20:30", "2024/04/22 23:20:30", status[1]),
+                new Category(5L, 5L, 1L, 16L, 14L, 8L, "2024/04/23 12:22:30", "2024/04/23 23:22:30", status[1]),
+                new Category(6L, 6L, 1L, 14L, 16L, 6L, "2024/04/24 12:24:30", "2024/04/24 23:24:30", status[1]),
+                new Category(7L, 7L, 1L, 12L, 18L, 4L, "2024/04/25 12:26:30", "2024/04/25 23:26:30", status[1]),
+                new Category(8L, 8L, 1L, 10L, 20L, 2L, "2024/04/26 12:28:30", "2024/04/26 23:28:30", status[1]),
+                new Category(9L, 9L, 1L, 8L, 18L, 12L, "2024/05/01 12:30:30", "2024/05/01 23:30:30", status[1]),
+                new Category(10L, 10L, 1L, 6L, 16L, 10L, "2024/05/02 12:32:30", "2024/05/02 23:32:30", status[1]),
+                new Category(11L, 11L, 1L, 4L, 14L, 8L, "2024/05/03 12:34:30", "2024/05/03 23:34:30", status[1]),
+                new Category(12L, 12L, 1L, 2L, 12L, 6L, "2024/05/04 12:36:30", "2024/05/04 23:36:30", status[1]),
+                new Category(13L, 13L, 1L, 12L, 10L, 4L, "2024/05/05 12:38:30", "2024/05/05 23:38:30", status[1]),
+                new Category(14L, 14L, 1L, 2L, 8L, 2L, "2024/05/06 12:40:30", "2024/05/06 23:40:30", status[1]),
+                new Category(15L, 15L, 1L, 18L, 12L, 10L, "2024/04/22 12:20:30", "2024/04/22 23:20:30", status[1]),
+                new Category(16L, 16L, 1L, 17L, 14L, 8L, "2024/04/23 12:22:30", "2024/04/23 23:22:30", status[1]),
+                new Category(17L, 17L, 1L, 16L, 16L, 5L, "2024/04/24 12:24:30", "2024/04/24 23:24:30", status[1]),
+                new Category(18L, 18L, 1L, 15L, 18L, 12L, "2024/04/25 12:26:30", "2024/04/25 23:26:30", status[1]),
+                new Category(19L, 19L, 1L, 14L, 20L, 10L, "2024/04/26 12:28:30", "2024/04/26 23:28:30", status[1]),
+                new Category(20L, 20L, 1L, 13L, 18L, 8L, "2024/04/27 12:30:30", "2024/04/27 23:30:30", status[1]),
+                new Category(21L, 21L, 1L, 12L, 16L, 5L, "2024/04/28 12:32:30", "2024/04/28 23:32:30", status[1]),
+                new Category(22L, 22L, 1L, 11L, 14L, 3L, "2024/04/29 12:34:30", "2024/04/29 23:34:30", status[1]),
+                new Category(23L, 23L, 1L, 10L, 12L, 1L, "2024/04/30 12:36:30", "2024/04/30 23:36:30", status[1]),
+                new Category(24L, 24L, 1L, 9L, 10L, 10L, "2024/05/01 12:38:30", "2024/05/01 23:38:30", status[1]),
+                new Category(25L, 25L, 1L, 8L, 8L, 8L, "2024/05/02 12:40:30", "2024/05/02 23:40:30", status[1]),
+                new Category(26L, 26L, 1L, 7L, 6L, 6L, "2024/05/03 12:42:30", "2024/05/03 23:42:30", status[1]),
+                new Category(27L, 27L, 2L, 5L, 4L, 3L, "2024/05/04 12:44:30", "2024/05/04 23:44:30", status[1]),
                 new Category(28L, 28L, 2L, 3L, 2L, 1L, "2024/05/05 12:46:30", "2024/05/05 23:46:30", status[0]),
                 new Category(29L, 29L, 2L, 1L, 1L, 1L, "2024/05/06 12:48:30", "2024/05/06 23:48:30", status[0]),
                 new Category(30L, 30L, 2L, 1L, 2L, 3L, "2024/05/07 12:50:30", "2024/05/07 23:50:30", status[0]),
@@ -138,10 +143,6 @@ public class CategoryImpl implements CategoryService {
 
         );
     }
-    private static long getRandomLong(long max) {
-        return 1L + (long) (Math.random() * (max - 1L + 1));
-    }
-
 
     @Override
     public List<Object[]> getAllAuthorsTranslatorsPublicationsGenres() {
@@ -149,8 +150,380 @@ public class CategoryImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDTO> getBook() {
-        return categoryRepository.getBooks();
+    public CategoryDTO findByStoriesBookId(Long storiesBookId) {
+        List<Object[]> objects = categoryRepository.findByStoriesBookId(storiesBookId);
+        return mapResultToCategoryDTOList(objects).getFirst();
     }
 
+    @Override
+    public List<CategoryDTO> getBookByStatus(String statusBook) {
+        List<Object[]> resultList = categoryRepository.getBooks(statusBook);
+        return mapResultToCategoryDTOList(resultList);
+    }
+
+    @Override
+    public int countBooksByAuthorId(long authorId) {
+        return categoryRepository.countBooksByAuthorId(authorId);
+    }
+
+    @Override
+    public int countBooksByPlacePublication(long publicationId) {
+        return categoryRepository.countBooksByPlacePublication(publicationId);
+    }
+
+    @Override
+    public int countBooksByGenreId(Long genreId) {
+        return categoryRepository.countBooksByGenreId(genreId);
+    }
+
+
+    @Override
+    public List<CategoryDTO> findBooksByGenresOptionAndNameBook(String nameBook) {
+        List<Object[]> resultList = categoryRepository.findBooksByGenresOptionAndNameBook(nameBook);
+        return mapResultToCategoryDTOList(resultList);
+    }
+
+    @Override
+    public List<CategoryDTO> findBooksByGenresOptionAndNameBook(String genresOption, String nameBook) {
+        List<Object[]> resultList = categoryRepository.findBooksByGenresOptionAndNameBook(genresOption, nameBook);
+        return mapResultToCategoryDTOList(resultList);
+    }
+
+    @Override
+    public List<CategoryDTO> findBooksByListProductSame(String type,String valueFind) {
+        List<Object[]> resultList = null;
+        switch (type){
+            case "author":{
+                resultList = categoryRepository.findBooksByAuthorName(valueFind);
+                break;
+            }
+            case "genre":{
+                resultList = categoryRepository.findBooksByGenreName(valueFind);
+                break;
+            }
+            case "translator":{
+                resultList = categoryRepository.findBooksByTranslatorName(valueFind);
+                break;
+            }
+        }
+
+        return mapResultToCategoryDTOList(resultList);
+    }
+
+    @Override
+    public Page<CategoryDTO> findGetCategoryFind(String codeCategory, String valueSession, String filterValue, int pageNumber, int pageSize) {
+        Page<Object[]> resultPage = null;
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+// lay ra danh sach san pham can tim
+        switch (codeCategory) {
+            case "genres": {
+                //san pham ban chay
+                switch (filterValue) {
+                    case "Title ASC":
+                        resultPage = categoryRepository.sortASCBooksByGenreName(valueSession, pageable);
+                        break;
+                    case "Title DESC":
+                        resultPage = categoryRepository.sortDESCBooksByGenreName(valueSession, pageable);
+                        break;
+                    case "IsNew":
+                        resultPage = categoryRepository.sortBooksByIsNewGenreName(valueSession, pageable);
+                        break;
+                    case "IsMostBuy":
+                        resultPage = categoryRepository.sortBooksByIsMostBuyGenreName(0,valueSession, pageable);
+                        break;
+                    case "IsMostDiscount":
+                        resultPage = categoryRepository.sortBooksByIsMostDiscountGenreName(valueSession, pageable);
+                        break;
+                    // san pham duoc xem nhieu
+                    case "ViewCount DESC":
+//                        resultPage = categoryRepository.sortBooksByViewCountDESCGenreName(valueSession, pageable);
+                        break;
+                    case "RealPrice ASC":
+                        resultPage = categoryRepository.sortPriceASCBooksByGenreName(valueSession, pageable);
+                        break;
+                    case "RealPrice DESC":
+                        resultPage = categoryRepository.sortPriceDESCBooksByGenreName(valueSession, pageable);
+                        break;
+                }
+                break;
+            }
+            case "author":{
+                switch (filterValue) {
+                    case "Title ASC":
+                        resultPage = categoryRepository.sortASCBooksByAuthorName(valueSession, pageable);
+                        break;
+                    case "Title DESC":
+                        resultPage = categoryRepository.sortDESCBooksByAuthorName(valueSession, pageable);
+                        break;
+                    case "IsNew":
+                        resultPage = categoryRepository.sortBooksByIsNewAuthorName(valueSession, pageable);
+                        break;
+                    case "IsMostBuy":
+                        resultPage = categoryRepository.sortBooksByIsMostBuyAuthorName(0,valueSession, pageable);
+                        break;
+                    case "IsMostDiscount":
+                        resultPage = categoryRepository.sortBooksByIsMostDiscountAuthorName(valueSession, pageable);
+                        break;
+                    // san pham duoc xem nhieu
+                    case "ViewCount DESC":
+//                        resultPage = categoryRepository.sortBooksByViewCountDESCGenreName(valueSession, pageable);
+                        break;
+                    case "RealPrice ASC":
+                        resultPage = categoryRepository.sortPriceASCBooksByAuthorName(valueSession, pageable);
+                        break;
+                    case "RealPrice DESC":
+                        resultPage = categoryRepository.sortPriceDESCBooksByAuthorName(valueSession, pageable);
+                        break;
+                } break;
+            }
+            case "publisher":{
+                switch (filterValue) {
+                    case "Title ASC":
+                        resultPage = categoryRepository.sortASCBooksByPublisherName(valueSession, pageable);
+                        break;
+                    case "Title DESC":
+                        resultPage = categoryRepository.sortDESCBooksByPublisherName(valueSession, pageable);
+                        break;
+                    case "IsNew":
+                        resultPage = categoryRepository.sortBooksByIsNewPublisherName(valueSession, pageable);
+                        break;
+                    case "IsMostBuy":
+                        resultPage = categoryRepository.sortBooksByIsMostBuyPlacePublicationName(0,valueSession, pageable);
+                        break;
+                    case "IsMostDiscount":
+                        resultPage = categoryRepository.sortBooksByIsMostDiscountPublisherName(valueSession, pageable);
+                        break;
+                    // san pham duoc xem nhieu
+                    case "ViewCount DESC":
+//                        resultPage = categoryRepository.sortBooksByViewCountDESCGenreName(valueSession, pageable);
+                        break;
+                    case "RealPrice ASC":
+                        resultPage = categoryRepository.sortPriceASCBooksByPublisherName(valueSession, pageable);
+                        break;
+                    case "RealPrice DESC":
+                        resultPage = categoryRepository.sortPriceDESCBooksByPublisherName(valueSession, pageable);
+                        break;
+                } break;
+            }
+            case "age":{
+                // valueSession price "n - n" or "n"
+                String[] splitAgeRange = splitValues(valueSession);
+                if (splitAgeRange.length == 2) {
+                    int startAge = Integer.parseInt(splitAgeRange[0]);
+                    int endAge = Integer.parseInt(splitAgeRange[1]);
+
+                    switch (filterValue) {
+                        case "Title ASC":
+                            resultPage = categoryRepository.sortASCBooksByAgeRange(startAge,endAge, pageable);
+                            break;
+                        case "Title DESC":
+                            resultPage = categoryRepository.sortDESCBooksByAgeRange(startAge,endAge, pageable);
+                            break;
+                        case "IsNew":
+                            resultPage = categoryRepository.sortDESCBooksIsNewByAgeRange(startAge,endAge, pageable);
+                            break;
+                        case "IsMostBuy":
+                            resultPage = categoryRepository.sortDESCBooksByIsMostBuyAgeRange(0,startAge,endAge, pageable);
+                            break;
+                        case "IsMostDiscount":
+                            resultPage = categoryRepository.sortDESCBooksByIsMostDiscountAgeRange(startAge,endAge, pageable);
+                            break;
+                        // san pham duoc xem nhieu
+                        case "ViewCount DESC":
+//                        resultPage = categoryRepository.sortBooksByViewCountDESCGenreName(valueSession, pageable);
+                            break;
+                        case "RealPrice ASC":
+                            resultPage = categoryRepository.sortPriceASCBooksByAgeRange(startAge,endAge, pageable);
+                            break;
+                        case "RealPrice DESC":
+                            resultPage = categoryRepository.sortPriceDESCBooksByAgeRange(startAge,endAge, pageable);
+                            break;
+                    } break;
+                }
+                else {
+                    Integer valueS = Integer.parseInt(valueSession);
+                    switch (filterValue) {
+                        case "Title ASC":
+                            resultPage = categoryRepository.sortASCBooksByAgeRange(valueS, pageable);
+                            break;
+                        case "Title DESC":
+                            resultPage = categoryRepository.sortDESCBooksByAgeRange(valueS, pageable);
+                            break;
+                        case "IsNew":
+                            resultPage = categoryRepository.sortDESCBooksIsNewByAgeRange(valueS, pageable);
+                            break;
+                        case "IsMostBuy":
+                            resultPage = categoryRepository.sortDESCBooksByIsMostBuyAgeRange(0,valueS, pageable);
+                            break;
+                        case "IsMostDiscount":
+                            resultPage = categoryRepository.sortDESCBooksByIsMostDiscountAgeRange(valueS, pageable);
+                            break;
+                        // san pham duoc xem nhieu
+                        case "ViewCount DESC":
+//                        resultPage = categoryRepository.sortBooksByViewCountDESCGenreName(valueSession, pageable);
+                            break;
+                        case "RealPrice ASC":
+                            resultPage = categoryRepository.sortPriceASCBooksByAgeRange(valueS, pageable);
+                            break;
+                        case "RealPrice DESC":
+                            resultPage = categoryRepository.sortPriceDESCBooksByAgeRange(valueS, pageable);
+                            break;
+                    } break;
+                }
+
+
+            }
+            case "price":{
+                // valueSession price "n - n" or "n"
+                String[] splitPriceRange = splitValues(valueSession);
+
+                if (splitPriceRange.length == 2) {
+                    int startPrice = Integer.parseInt(splitPriceRange[0]);
+                    int endPrice = Integer.parseInt(splitPriceRange[1]);
+                    switch (filterValue) {
+                        case "Title ASC":
+                            resultPage = categoryRepository.sortASCBooksByPriceRange(startPrice,endPrice, pageable);
+                            break;
+                        case "Title DESC":
+                            resultPage = categoryRepository.sortDESCBooksByPriceRange(startPrice,endPrice, pageable);
+                            break;
+                        case "IsNew":
+                            resultPage = categoryRepository.sortDESCBooksByIsNewPriceRange(startPrice,endPrice, pageable);
+                            break;
+                        case "IsMostBuy":
+                            resultPage = categoryRepository.sortDESCBooksByIsMostBuyPriceRange(0,startPrice,endPrice, pageable);
+                            break;
+                        case "IsMostDiscount":
+                            resultPage = categoryRepository.sortDESCBooksByIsMostDiscountPriceRange(startPrice,endPrice, pageable);
+                            break;
+                        // san pham duoc xem nhieu
+                        case "ViewCount DESC":
+//                        resultPage = categoryRepository.sortBooksByViewCountDESCGenreName(valueSession, pageable);
+                            break;
+                        case "RealPrice ASC":
+                            resultPage = categoryRepository.sortPriceASCBooksByPriceRange(startPrice,endPrice, pageable);
+                            break;
+                        case "RealPrice DESC":
+                            resultPage = categoryRepository.sortPriceDESCBooksByPriceRange(startPrice,endPrice, pageable);
+                            break;
+                    } break;
+                }
+                else {
+                    Integer valueS = Integer.parseInt(valueSession);
+                    switch (filterValue) {
+                        case "Title ASC":
+                            resultPage = categoryRepository.sortASCBooksByPriceRange(valueS, pageable);
+                            break;
+                        case "Title DESC":
+                            resultPage = categoryRepository.sortDESCBooksByPriceRange(valueS, pageable);
+                            break;
+                        case "IsNew":
+                            resultPage = categoryRepository.sortASCBooksByIsNewPriceRange(valueS, pageable);
+                            break;
+                        case "IsMostBuy":
+                            resultPage = categoryRepository.sortDESCBooksByIsMostBuyPriceRange(0,valueS, pageable);
+                            break;
+                        case "IsMostDiscount":
+                            resultPage = categoryRepository.sortDESCBooksByIsMostDiscountPriceRange(valueS, pageable);
+                            break;
+                        // san pham duoc xem nhieu
+                        case "ViewCount DESC":
+//                        resultPage = categoryRepository.sortBooksByViewCountDESCGenreName(valueSession, pageable);
+                            break;
+                        case "RealPrice ASC":
+                            resultPage = categoryRepository.sortPriceASCBooksByPriceRange(valueS, pageable);
+                            break;
+                        case "RealPrice DESC":
+                            resultPage = categoryRepository.sortPriceDESCBooksByPriceRange(valueS, pageable);
+                            break;
+                    } break;
+                }
+            }
+        }
+        if (resultPage == null) {
+            return null;
+        }
+        List<CategoryDTO> resultFind = resultPage.getContent().stream()
+                .map(this::mapComicDiscountToCategory)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(resultFind, pageable, resultPage.getTotalElements());
+    }
+
+    private List<CategoryDTO> mapResultToCategoryDTOList(List<Object[]> resultList) {
+        List<CategoryDTO> categoryDTOList = new ArrayList<>();
+        for (Object[] objects : resultList) {
+            CategoryDTO categoryDTO = mapComicDiscountToCategory(objects);
+            categoryDTOList.add(categoryDTO);
+        }
+        return categoryDTOList;
+    }
+
+    private CategoryDTO mapComicDiscountToCategory(Object[] objects) {
+        Category category = (Category) objects[0];
+        ComicDiscount comicDiscount = (ComicDiscount) objects[1];
+
+        CategoryDTO categoryDTO = CategoryMapper.mapToCategoryDTO(category);
+        int reductionRate = comicDiscount.getReduction_rate();
+        categoryDTO.setReductionRate(reductionRate);
+
+        double priceReductionRate = reductionRate * 0.01;
+        double newPrice = category.getStoriesBook().getPrice() - (category.getStoriesBook().getPrice() * priceReductionRate);
+        categoryDTO.getStoriesBookDTO().setNewPrice((int) newPrice); // Có thể mất dữ liệu tính toán
+        return categoryDTO;
+    }
+
+    private String[] splitValues(String val) {
+        if (val.contains("-")) {
+            return val.split("\\s*-\\s*");
+        } else {
+            return new String[]{val};
+        }
+    }
+    // Sort with ASC OR DESC
+    private List<CategoryDTO> sortCategoryByNewPrice(List<CategoryDTO> categoryList, boolean ascending) {
+        Comparator<CategoryDTO> comparator = Comparator.comparingDouble(
+                c -> c.getStoriesBookDTO().getNewPrice()
+        );
+        if (!ascending) {
+            comparator = comparator.reversed();
+        }
+        categoryList.sort(comparator);
+        return categoryList;
+    }
+
+    // IsNewBooks => dua tren ngay them vao moi nhat
+    private List<CategoryDTO> categoryByIsNewBooks(List<CategoryDTO> categoryList){
+        categoryList.sort(Comparator.comparing(
+                c -> c.getStoriesBookDTO().getCreatedDate(), Comparator.reverseOrder()
+        ));
+        return categoryList;
+    }
+
+    // san pham ban chay
+    private List<CategoryDTO> categoryByIsMostBuyBooks(String valueSession,List<CategoryDTO> categoryList){
+        // Danh sách sản phẩm bán chạy sắp xếp từ lớn đến nhỏ
+        List<OrderBookDTO> lsBookBestSell = orderBookService.findCategoriesByTotalQuantityAndGenre(0, valueSession);
+        lsBookBestSell.sort(Comparator.comparing(OrderBookDTO::getTotalQuantity).reversed());
+        List<CategoryDTO> abc = new ArrayList<>(categoryList.size());
+
+         categoryList.forEach(categoryDTO -> System.err.println(categoryDTO.getStoriesBookDTO().getId()));
+        System.err.println(">>>>>>>>>>>>>>>");
+        lsBookBestSell.forEach(orderBookDTO -> System.err.println(orderBookDTO.getStoriesId()));
+        return categoryList;
+    }
+
+    private List<CategoryDTO> categoryByIsMostDiscountBooks(List<CategoryDTO> categoryList){
+
+        return null;
+    }
+    private List<CategoryDTO> categoryByViewCountBooks(List<CategoryDTO> categoryList){
+
+        return null;
+    }
+    private List<CategoryDTO> getSortByCriteria(String sortCriteria, List<CategoryDTO> categoryList) {
+        List<CategoryDTO> sort = List.of();
+
+        return sort;
+    }
 }

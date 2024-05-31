@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Builder
 @Data
 public class CategoryDTO {
-    public Long idStoriesBook;
+    public Long id;
     public StoriesBookDTO storiesBookDTO;
     public String storyAuthorName;
     public String storyTranslatorName;
@@ -27,8 +27,8 @@ public class CategoryDTO {
         this.storyTranslatorName = storyTranslatorName;
         this.placePublicationName = placePublicationName;
     }
-    public CategoryDTO(Long idStoriesBook, String storyAuthorName, String storyTranslatorName, String placePublicationName, String storyGenre, int reductionRate, LocalDateTime createdDate, String status ) {
-        this.idStoriesBook = idStoriesBook;
+    public CategoryDTO(Long id, String storyAuthorName, String storyTranslatorName, String placePublicationName, String storyGenre, int reductionRate, LocalDateTime createdDate, String status ) {
+        this.id = id;
         this.storyAuthorName = storyAuthorName;
         this.storyTranslatorName = storyTranslatorName;
         this.placePublicationName = placePublicationName;
