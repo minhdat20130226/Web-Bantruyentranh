@@ -12,7 +12,5 @@ import lombok.Data;
 public class StoryAuthorDTO {
     private Long id;
     private String name;
-    public StoryAuthorDTO( String name) {
-        this.name = name;
-    }
+    private int totalBookPublic;
 }

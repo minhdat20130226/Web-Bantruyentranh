@@ -5,6 +5,6 @@ import cdweb.sellstories.sellstories.entity.User;
 
 public interface PasswordResetTokenService {
 
-    void initTokenUser(UserDTO userDTO);
+    void initTokenUserWithUserRegister(Long idUserDTO,String tokenValue);
     boolean verifyToken(String token);
 }

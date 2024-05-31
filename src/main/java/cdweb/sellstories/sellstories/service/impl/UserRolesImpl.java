@@ -20,8 +20,8 @@ public class UserRolesImpl implements UserRolesService {
     private final UserRolesRepository userRoleRepository;
 
     @Override
-    public void saveUserRole(UserDTO userDTO) {
-        UserRoles userRoles = UserRoleMapper.mapToUserRole(userDTO);
+    public void saveUserRoleWithIdUser(Long idUserDTO) {
+        UserRoles userRoles = new UserRoles(idUserDTO,Role.builder().id(2L).build());
         userRoleRepository.save(userRoles);
     }
 }

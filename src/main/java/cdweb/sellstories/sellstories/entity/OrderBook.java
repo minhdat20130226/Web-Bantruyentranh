@@ -3,6 +3,7 @@ package cdweb.sellstories.sellstories.entity;
 import cdweb.sellstories.sellstories.util.LocalDateTimeUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -14,6 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "order_book")
 public class OrderBook {
     @Id
@@ -58,5 +60,19 @@ public class OrderBook {
         this.shippingMethod = shippingMethod;
         this.orderDate = LocalDateTimeUtils.parseDateString(orderDate);
         this.paymentAction = paymentAction;
+    }
+
+    public OrderBook(Long id, Long  idUser, String orderCode, String orderStatus, int quantity, String shippingMethod, String orderDate) {
+        this.id = id;
+        this.user = new User(idUser);
+        this.orderCode = orderCode;
+        this.orderStatus = orderStatus;
+        this.quantity = quantity;
+        this.shippingMethod = shippingMethod;
+        this.orderDate = LocalDateTimeUtils.parseDateString(orderDate);
+    }
+
+    public OrderBook(Long id) {
+        this.id = id;
     }
 }

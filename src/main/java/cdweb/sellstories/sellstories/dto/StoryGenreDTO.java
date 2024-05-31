@@ -12,7 +12,5 @@ import lombok.Data;
 public class StoryGenreDTO {
     private Long id;
     private String name;
-    public StoryGenreDTO( String name) {
-        this.name = name;
-    }
+    private int totalBookPublic;
 }

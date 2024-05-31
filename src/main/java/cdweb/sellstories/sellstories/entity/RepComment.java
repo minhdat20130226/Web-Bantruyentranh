@@ -1,5 +1,6 @@
 package cdweb.sellstories.sellstories.entity;
 
+import cdweb.sellstories.sellstories.util.LocalDateTimeUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -20,8 +20,8 @@ public class RepComment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_user_comment")
-    private User userComment;
+    @JoinColumn(name = "id_comment")
+    private Comment comment;
 
     @ManyToOne
     @JoinColumn(name = "id_user_rep_comment")
@@ -35,4 +35,17 @@ public class RepComment {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Column(name = "total_like_comment")
+    private int totalLikeComment;
+
+    public RepComment(Long id, Long idComment, Long idUserRepComment, String contentRep, String createdAt, String updatedAt,int totalLikeComment) {
+        this.id = id;
+        this.comment = new Comment(idComment);
+        this.userRepComment = new User(idUserRepComment);
+        this.contentRep = contentRep;
+        this.createdAt = LocalDateTimeUtils.parseDateString(createdAt);
+        this.updatedAt = LocalDateTimeUtils.parseDateString(updatedAt);
+        this.totalLikeComment = totalLikeComment;
+    }
 }

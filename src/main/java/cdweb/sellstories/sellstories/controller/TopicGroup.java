@@ -1,11 +1,7 @@
 package cdweb.sellstories.sellstories.controller;
 
 import cdweb.sellstories.sellstories.dto.CategoryDTO;
-import cdweb.sellstories.sellstories.dto.StoriesBookDTO;
-import cdweb.sellstories.sellstories.service.CategoryService;
-import cdweb.sellstories.sellstories.service.ComicDiscountService;
-import cdweb.sellstories.sellstories.service.CommentService;
-import cdweb.sellstories.sellstories.service.StoriesBookService;
+import cdweb.sellstories.sellstories.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +21,8 @@ public class TopicGroup {
     private StoriesBookService storiesBookService;
     @Autowired
     private ComicDiscountService comicDiscountService;
+    @Autowired
+    private LikeBookService likeBookService;
 
     // uu dai trong ngay lay san pham giam gia cao nhat
     @GetMapping("api/topic/ud-in-day")
@@ -73,7 +71,7 @@ public class TopicGroup {
     @GetMapping("api/topic/max-is-like")
     public ResponseEntity<HttpResponse> maxIsLikeBook() {
         try {
-            Long idHighestLike = commentService.findIdOfBookWithHighestLike();
+            Long idHighestLike = likeBookService.findIdOfBookWithHighestLike();
             CategoryDTO highestLikeBook = categoryService.findByStoriesBookId(idHighestLike);
             return ResponseEntity.ok().body(
                     HttpResponse.builder()

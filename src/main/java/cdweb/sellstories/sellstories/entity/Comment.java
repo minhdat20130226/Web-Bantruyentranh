@@ -1,5 +1,6 @@
 package cdweb.sellstories.sellstories.entity;
 
+import cdweb.sellstories.sellstories.util.LocalDateTimeUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -40,8 +40,17 @@ public class Comment {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "is_like")
-    private boolean isLike;
-
+    public Comment(Long id, String contentComment, Long idUser, Long idStoriesBook, int starRating, String createdAt, String updatedAt) {
+        this.id = id;
+        this.contentComment = contentComment;
+        this.user = new User(idUser);
+        this.storiesBook = new StoriesBook(idStoriesBook);
+        this.starRating = starRating;
+        this.createdAt = LocalDateTimeUtils.parseDateString(createdAt);
+        this.updatedAt = LocalDateTimeUtils.parseDateString(updatedAt);
+    }
+    public Comment(Long id) {
+        this.id = id;
+    }
 }
 

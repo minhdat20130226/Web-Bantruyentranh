@@ -20,7 +20,7 @@ public class OrderBookDTO {
     private String orderCode;
     private String orderStatus;
     private int quantity;
-    private String shippingMethod;
+    private String methodTransport;
     private LocalDateTime orderDate;
     private String paymentAction;
     private int totalQuantity;

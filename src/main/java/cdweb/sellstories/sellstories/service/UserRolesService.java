@@ -4,5 +4,5 @@ import cdweb.sellstories.sellstories.dto.UserDTO;
 import cdweb.sellstories.sellstories.dto.UserRoleDTO;
 
 public interface UserRolesService {
-    void saveUserRole(UserDTO userDTO);
+    void saveUserRoleWithIdUser(Long idUserDTO);
 }
